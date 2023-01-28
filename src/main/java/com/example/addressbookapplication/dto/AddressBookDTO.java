@@ -23,7 +23,7 @@ public class AddressBookDTO {
     private String contactNo;
 
     @NotBlank(message = "email should not be empty")
-    @Pattern(regexp= "^[a-zA-Z0-9]{3,}([\\\\.\\\\+\\\\-]?[a-zA-Z0-9]{3,})?[@][A-Za-z0-9]{1,}[.][A-Za-z]{2,4}[,]?([.][A-Za-z]{2,4}[.]?)?$",message="email should not be empty")
+    @Pattern(regexp= "^[A-Za-z0-9+_.-@]+@(.+)$",message="email should not be empty")
     private String email;
 
     @NotBlank(message = "address should not be empty")

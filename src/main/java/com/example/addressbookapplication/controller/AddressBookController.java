@@ -50,7 +50,7 @@ public class AddressBookController {
 
     // Getting Address details by id from the Database
     @GetMapping("/get/{personId}")
-    public ResponseEntity<ResponseDTO> getEmployeePayrollData(@PathVariable("personId") int personId) {
+    public ResponseEntity<ResponseDTO> getAddressBookData(@PathVariable("personId") int personId) {
         AddressBookData addressBookData = null;
         addressBookData = addressBookService.getAddressBookDataById(personId);
         ResponseDTO respDTO = new ResponseDTO("Get Call for Id Successfull", addressBookData);
@@ -59,29 +59,63 @@ public class AddressBookController {
 
     // Creating an Address Data and save to Database
     @PostMapping("/create")
-    public ResponseEntity<ResponseDTO> createEmployeePayrollData(@Valid @RequestBody AddressBookDTO addressBookDTO) {
+    public ResponseEntity<ResponseDTO> createAddressBookData(@Valid @RequestBody AddressBookDTO addressBookDTO) {
         AddressBookData addressBookData = null;
         addressBookData = addressBookService.createAddressBookData(addressBookDTO);
-        ResponseDTO respDTO = new ResponseDTO("Created Employee Payroll Data Successfully", addressBookData);
+        ResponseDTO respDTO = new ResponseDTO("Created Address Book Data Successfully", addressBookData);
         return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
     }
 
     // Updating an Address Details by using id from Database
     @PutMapping(path = "/update/{personId}")
-    public ResponseEntity<ResponseDTO> updateEmployeePayrollData(@Valid @PathVariable("personId") int personId,
+    public ResponseEntity<ResponseDTO> updateAddressBookData(@Valid @PathVariable("personId") int personId,
                                                                  @RequestBody AddressBookDTO addressBookDTO) {
 
         AddressBookData addressBookData = null;
         addressBookData = addressBookService.updateAddressBookData(personId, addressBookDTO);
-        ResponseDTO respDTO = new ResponseDTO("Updated Employee payroll Data for: ", addressBookData);
+        ResponseDTO respDTO = new ResponseDTO("Updated Address Book Data for: ", addressBookData);
         return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
     }
 
     // Deleting an Address Details using id from the Database
     @DeleteMapping("/delete/{personId}")
-    public ResponseEntity<ResponseDTO> deleteEmployeePayrollData(@PathVariable("personId") int personId) {
+    public ResponseEntity<ResponseDTO> deleteAddressBookData(@PathVariable("personId") int personId) {
         addressBookService.deleteAddressBookData(personId);
         ResponseDTO respDTO = new ResponseDTO("Deleted Successfully", "Deleted id: " + personId);
         return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
+    }
+
+    //Creating an Address Data by token
+    @PostMapping("/addtoken")
+    public ResponseEntity<ResponseDTO> createDataByToken(@Valid @RequestBody AddressBookDTO addressBookDTO) {
+        AddressBookData addressBookData = addressBookService.createAddressBookDataByToken(addressBookDTO);
+        ResponseDTO response = new ResponseDTO("Created Address Book Data Successfully", addressBookData);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // Getting Address details by token from the Database
+    @CrossOrigin
+    @GetMapping("/gettoken/{token}")
+    public ResponseEntity<ResponseDTO> getDataByToken(@PathVariable String token) {
+        ResponseDTO response = new ResponseDTO("Get Call for token Successfully ",
+                addressBookService.getAddressBookDataByToken(token));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // Updating an Address Details by using token from Database
+    @PutMapping("/updatetoken/{token}")
+    public ResponseEntity<ResponseDTO> updateDataByToken(@PathVariable String token,
+                                                     @Valid @RequestBody AddressBookDTO addressBookDTO) {
+        ResponseDTO response = new ResponseDTO("Updated Address Book Data Successfully",
+                addressBookService.updateAddressBookDataByToken(token, addressBookDTO));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // Deleting an Address Details by using token from Database
+    @DeleteMapping("/deletetoken/{token}")
+    public ResponseEntity<ResponseDTO> deleteDataByToken(@PathVariable String token) {
+        ResponseDTO response = new ResponseDTO("Deleted Address Book Data Successfully ",
+                addressBookService.deleteAddressBookDataByToken(token));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
